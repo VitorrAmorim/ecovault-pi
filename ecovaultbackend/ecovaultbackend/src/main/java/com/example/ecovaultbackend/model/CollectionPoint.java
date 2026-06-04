@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import lombok.Data;
 
@@ -26,6 +27,7 @@ public class CollectionPoint {
 
     @Data
     public static class AcceptedItem {
+        @Field("id")
         private String id;
         private String label;
         private int pointsPerDisposal;

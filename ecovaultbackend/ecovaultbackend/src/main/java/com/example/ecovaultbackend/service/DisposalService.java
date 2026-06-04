@@ -43,14 +43,19 @@ public class DisposalService {
 
         user.setPoints(user.getPoints() + pointsEarned);
         user.setTotalDisposals(user.getTotalDisposals() + 1);
+
+        
+        int levelAntes = user.getLevel();
         updateLevel(user);
+        boolean levelUp = user.getLevel() > levelAntes;
+
         userRepository.save(user);
 
         return new DisposalResponseDTO(
                 pointsEarned,
                 user.getPoints(),
                 user.getLevelProgress(),
-                false
+                levelUp
         );
     }
 
