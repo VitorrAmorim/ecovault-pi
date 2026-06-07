@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+
 import { useNavigate } from "react-router-dom";
 
 import { Bell, AlertTriangle, Smartphone } from "lucide-react";
@@ -11,8 +13,48 @@ import CategoryPills from "../components/CategoryPills";
 import SectionHeader from "../components/SectionHeader";
 import GuideCard from "../components/GuideCard";
 
+import AuthModal from "../components/AuthModal";
+
 const Home = () => {
   const navigate = useNavigate();
+
+  const [authOpen, setAuthOpen] = useState(false);
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) return;
+
+    setUser(token ? JSON.parse(token) : null);
+
+    // const fetchData = async () => {
+    //   try {
+    //     const response = await api.get("/users/me", {
+    //       headers: {
+    //         Authorization: `Bearer ${token.token}`,
+    //       },
+    //     });
+
+    //     setUser(response.data);
+    //   } catch (error) {
+    //     console.error("Error fetching user data:", error);
+    //   }
+    // };
+
+    // fetchData();
+  }, [localStorage.getItem("token")]);
+
+  const hoje = new Date();
+
+  const diaSemana = hoje.toLocaleDateString("pt-BR", { weekday: "long" });
+  const diaMes = hoje.toLocaleDateString("pt-BR", {
+    day: "numeric",
+    month: "short",
+  });
+
+  const dataFormatada = `${diaSemana}, ${diaMes}`;
 
   return (
     <AppShell activeTab="home">
@@ -26,23 +68,46 @@ const Home = () => {
               className="w-9 h-9 rounded-full flex items-center justify-center font-display font-bold text-[0.7rem] cursor-pointer shadow-[0_0_0_2px_var(--mint-glow2)] lg:hidden"
               style={{ background: "var(--gradient-fab)" }}
             >
-              MR
+              {user?.name?.charAt(0).toUpperCase() || "MR"}
             </div>
           </div>
         }
       />
 
-      {/* Greeting */}
-      <div className="px-5 pt-0.5 pb-5">
-        <div className="text-[0.72rem] text-muted-foreground uppercase tracking-[1px] font-medium">
-          Segunda-feira, 23 mar
+      <div className="px-5 pt-0.5 pb-5 flex items-center justify-between">
+        <div>
+          <div className="text-[0.72rem] text-muted-foreground uppercase tracking-[1px] font-medium">
+            {dataFormatada}
+          </div>
+          <div className="font-display text-2xl font-bold mt-0.5">
+            Olá,{" "}
+            <span className="text-primary">
+              {user ? user?.name : "usuário"}
+            </span>{" "}
+            👋
+          </div>
         </div>
-        <div className="font-display text-2xl font-bold mt-0.5">
-          Olá, <span className="text-primary">Marcos</span> 👋
-        </div>
+        {user ? (
+          <div
+            className="w-9 h-9 rounded-full flex items-center justify-center font-display font-bold text-[0.65rem]"
+            style={{ background: "var(--gradient-fab)" }}
+          >
+            {user?.name
+              ?.split(" ")
+              .map((n) => n[0])
+              .join("")}
+          </div>
+        ) : (
+          <div
+            className="h-9 px-4 rounded-full bg-primary/10 border border-primary/20 text-primary font-display font-semibold text-sm cursor-pointer flex items-center transition-colors hover:bg-primary/20"
+            onClick={() => setAuthOpen(true)}
+          >
+            Entrar
+          </div>
+        )}
       </div>
 
-      <PointsBar />
+      {user && <PointsBar />}
 
       <SearchBox
         title="O que você quer descartar hoje?"
@@ -80,6 +145,8 @@ const Home = () => {
           description="Passo a passo para iPhone e Android antes do descarte."
         />
       </div>
+
+      <AuthModal open={authOpen} onOpenChange={setAuthOpen} />
     </AppShell>
   );
 };

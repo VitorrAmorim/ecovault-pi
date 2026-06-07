@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import AppShell from "../components/AppShell";
 import TopBar from "../components/TopBar";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +13,32 @@ const badges = [
 
 const Profile = () => {
   const navigate = useNavigate();
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) return;
+
+    setUser(token ? JSON.parse(token) : null);
+
+    // const fetchData = async () => {
+    //   try {
+    //     const response = await api.get("/users/me", {
+    //       headers: {
+    //         Authorization: `Bearer ${token.token}`,
+    //       },
+    //     });
+
+    //     setUser(response.data);
+    //   } catch (error) {
+    //     console.error("Error fetching user data:", error);
+    //   }
+    // };
+
+    // fetchData();
+  }, [localStorage.getItem("token")]);
 
   return (
     <AppShell activeTab="profile">
@@ -30,11 +57,14 @@ const Profile = () => {
               className="w-12 h-12 rounded-full flex items-center justify-center font-display font-bold text-sm"
               style={{ background: "var(--gradient-fab)" }}
             >
-              MR
+              {user?.name
+                ?.split(" ")
+                .map((n) => n[0])
+                .join("")}
             </div>
             <div className="flex-1">
               <div className="font-display font-bold text-base">
-                Marcos Ribeiro
+                {user?.name}
               </div>
               <div className="text-xs text-muted-foreground">
                 Eco-Herói · Nível 4
