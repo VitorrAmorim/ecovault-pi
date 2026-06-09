@@ -1,8 +1,20 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Check } from "lucide-react";
 
 const Success = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const {
+    pointsEarned = 110,
+    newTotal = 0,
+    levelProgress = 0,
+    levelUp = false,
+  } = location.state ?? {};
+
+  const progressPercent = Math.max(
+    0,
+    Math.min(100, Number(levelProgress) || 0),
+  );
 
   return (
     <div className="flex min-h-screen justify-center bg-background">
@@ -19,23 +31,28 @@ const Success = () => {
           Aqui estão seus pontos:
         </p>
         <div className="font-display text-[3.5rem] font-extrabold text-primary tracking-[-3px] leading-none">
-          +110
+          +{pointsEarned}
         </div>
         <div className="text-[0.8rem] text-muted-foreground mt-1 mb-8">
-          pontos adicionados ao seu EcoSaldo
+          {newTotal} pontos no seu EcoSaldo
         </div>
 
         <div className="bg-card border border-border rounded-lg p-4 w-full mb-6">
           <div className="flex justify-between mb-2">
             <span className="font-display font-bold text-[0.85rem]">
-              Eco-Herói → Guardião
+              {levelUp
+                ? "Novo nível desbloqueado!"
+                : "Progresso no nível atual"}
             </span>
-            <span className="text-primary text-[0.78rem]">74%</span>
+            <span className="text-primary text-[0.78rem]">
+              {progressPercent}%
+            </span>
           </div>
           <div className="h-1.25 bg-foreground/5 rounded-full overflow-hidden">
             <div
-              className="h-full w-[74%] rounded-full"
+              className="h-full rounded-full"
               style={{
+                width: `${progressPercent}%`,
                 background:
                   "linear-gradient(90deg, hsl(var(--emerald)), hsl(var(--mint)))",
               }}

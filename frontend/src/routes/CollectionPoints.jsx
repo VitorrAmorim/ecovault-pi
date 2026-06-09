@@ -1,73 +1,60 @@
 import { useNavigate } from "react-router-dom";
 
-import { Battery, Lightbulb, Smartphone, Monitor } from "lucide-react";
+import {
+  Battery,
+  Lightbulb,
+  Smartphone,
+  Monitor,
+  Laptop,
+  Tablet,
+  Plug,
+} from "lucide-react";
 
 import AppShell from "../components/AppShell";
 import TopBar from "../components/TopBar";
 import SearchBox from "../components/SearchBox";
 import CategoryPills from "../components/CategoryPills";
 import PointCard from "../components/PointCard";
+import { useEffect, useState } from "react";
 
-const collectionPoints = [
-  {
-    id: "1",
-    name: "Claro Store — Shopping Indaiatuba",
-    address: "Av. Antônio Prado, 1204 · Térreo, L42",
-    status: "green",
-    tags: [
-      { icon: <Battery size={12} />, label: "Pilhas" },
-      { icon: <Lightbulb size={12} />, label: "Lâmpadas" },
-      { icon: <Smartphone size={12} />, label: "Smartphones" },
-    ],
-    distance: "280m",
-    openStatus: "Aberto até 22h",
-    isOpen: true,
-  },
-  {
-    id: "2",
-    name: "Leroy Merlin",
-    address: "Rodovia Anhanguera, km 98 · Entrada lateral",
-    status: "amber",
-    tags: [
-      { icon: <Lightbulb size={12} />, label: "Lâmpadas" },
-      { icon: <Battery size={12} />, label: "Cabos" },
-    ],
-    distance: "540m",
-    openStatus: "Aberto até 21h",
-    isOpen: true,
-  },
-  {
-    id: "3",
-    name: "Casas Bahia — Centro",
-    address: "R. Floriano Peixoto, 88 · Pós-venda",
-    status: "blue",
-    tags: [
-      { icon: <Smartphone size={12} />, label: "Smartphones" },
-      { icon: <Monitor size={12} />, label: "TVs" },
-    ],
-    distance: "720m",
-    openStatus: "Fecha às 20h",
-    isOpen: false,
-  },
-  {
-    id: "4",
-    name: "Ecopontos — Prefeitura",
-    address: "R. XV de Novembro, 1200 · Praça Central",
-    status: "green",
-    tags: [
-      { icon: <Battery size={12} />, label: "Pilhas" },
-      { icon: <Lightbulb size={12} />, label: "Lâmpadas" },
-      { icon: <Smartphone size={12} />, label: "Eletrônicos" },
-      { icon: <Monitor size={12} />, label: "TVs" },
-    ],
-    distance: "1,2km",
-    openStatus: "Aberto 24h",
-    isOpen: true,
-  },
-];
+import api from "../utils/api";
+
+const acceptedItemIcons = {
+  item_celular: <Smartphone size={12} />,
+  item_notebook: <Laptop size={12} />,
+  item_tablet: <Tablet size={12} />,
+  item_carregador: <Plug size={12} />,
+  item_pilhas: <Battery size={12} />,
+  item_lampadas: <Lightbulb size={12} />,
+  default: <Monitor size={12} />,
+};
+
+const getAcceptedItemTag = (item) => ({
+  icon: acceptedItemIcons[item.id] ?? acceptedItemIcons.default,
+  label: item.label,
+});
 
 const CollectionPoints = () => {
   const navigate = useNavigate();
+  const [collectionPoints, setCollectionPoints] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.get("/collection-points");
+        const data = response.data;
+        setCollectionPoints(Array.isArray(data) ? data : []);
+      } catch (error) {
+        console.error(error);
+        setCollectionPoints([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <AppShell activeTab="points">
@@ -84,20 +71,34 @@ const CollectionPoints = () => {
 
       <div className="px-5 mb-4">
         <span className="text-[0.78rem] text-muted-foreground">
-          4 pontos encontrados ·{" "}
+          {isLoading
+            ? "Buscando pontos..."
+            : `${collectionPoints.length} pontos encontrados · `}
         </span>
         <span className="text-[0.78rem] text-primary">Indaiatuba, SP</span>
       </div>
 
       <div className="px-5 grid grid-cols-1 lg:grid-cols-2 gap-3 mb-7">
-        {collectionPoints.map((point, i) => (
-          <PointCard
-            key={point.id}
-            {...point}
-            delay={i * 50}
-            onClick={() => navigate("/ponto/1")}
-          />
-        ))}
+        {!isLoading && collectionPoints.length === 0 ? (
+          <div className="col-span-full text-muted-foreground">
+            Nenhum ponto encontrado.
+          </div>
+        ) : (
+          collectionPoints.map((point, i) => (
+            <PointCard
+              key={point.id}
+              name={point.name}
+              address={point.address}
+              tags={(point.acceptedItems ?? []).map(getAcceptedItemTag)}
+              distance={point.distance ?? "—"}
+              openStatus={point.openStatus ?? ""}
+              isOpen={point.open ?? point.isOpen}
+              status={point.status ?? "green"}
+              delay={i * 50}
+              onClick={() => navigate(`/ponto/${point.id}`)}
+            />
+          ))
+        )}
       </div>
     </AppShell>
   );

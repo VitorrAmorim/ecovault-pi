@@ -1,4 +1,32 @@
+import { useEffect } from "react";
+
+import api from "../utils/api";
+
 const PointsBar = () => {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = JSON.parse(localStorage.getItem("token"));
+
+        if (!token) return;
+
+        console.debug(token.token);
+
+        const response = await api.get("/users/me", {
+          headers: {
+            Authorization: `Bearer ${token.token}`,
+          },
+        });
+
+        console.debug(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div
       className="mx-5 mb-5 border border-primary/20 rounded-lg p-5 relative overflow-hidden"

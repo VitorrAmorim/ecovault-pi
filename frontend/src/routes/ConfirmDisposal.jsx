@@ -1,38 +1,46 @@
 import { useState } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-import { Check, Battery, Lightbulb, Smartphone, Cable } from "lucide-react";
+import {
+  Check,
+  Battery,
+  Lightbulb,
+  Smartphone,
+  Cable,
+  Laptop,
+  Tablet,
+  Plug,
+} from "lucide-react";
 
 import AppShell from "../components/AppShell";
 import TopBar from "../components/TopBar";
 import ItemToggle from "../components/ItemToggle";
+import api from "../utils/api";
 
-const disposalItems = [
-  { id: "pilhas", icon: <Battery size={18} />, label: "Pilhas", points: 30 },
-  {
-    id: "lampadas",
-    icon: <Lightbulb size={18} />,
-    label: "Lâmpadas",
-    points: 20,
-  },
-  {
-    id: "smartphone",
-    icon: <Smartphone size={18} />,
-    label: "Smartphone",
-    points: 80,
-  },
-  {
-    id: "carregador",
-    icon: <Cable size={18} />,
-    label: "Carregador",
-    points: 15,
-  },
-];
+const acceptedItemIcons = {
+  item_celular: <Smartphone size={18} />,
+  item_notebook: <Laptop size={18} />,
+  item_tablet: <Tablet size={18} />,
+  item_carregador: <Plug size={18} />,
+  item_pilhas: <Battery size={18} />,
+  item_lampadas: <Lightbulb size={18} />,
+  default: <Cable size={18} />,
+};
+
+const getItemIcon = (item) =>
+  acceptedItemIcons[item.id] ?? acceptedItemIcons.default;
 
 const ConfirmDisposal = () => {
   const navigate = useNavigate();
-  const [selected, setSelected] = useState(["pilhas", "smartphone"]);
+  const location = useLocation();
+  const { collectionPointId, pointName, acceptedItems } = location.state ?? {};
+  const disposalItems = acceptedItems ?? [];
+  const [selected, setSelected] = useState(() =>
+    disposalItems.map((item) => item.id),
+  );
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const toggle = (id) => {
     setSelected((prev) =>
@@ -42,15 +50,82 @@ const ConfirmDisposal = () => {
 
   const totalPoints = disposalItems
     .filter((i) => selected.includes(i.id))
-    .reduce((s, i) => s + i.points, 0);
+    .reduce((s, i) => s + i.pointsPerDisposal, 0);
   const selectedItems = disposalItems.filter((i) => selected.includes(i.id));
+
+  const handleConfirmDisposal = async () => {
+    setError("");
+
+    const token = JSON.parse(localStorage.getItem("token"));
+
+    if (!token)
+      return toast.error("Cadastre-se na plataforma para realizar o descarte!");
+
+    if (!collectionPointId) {
+      return setError(
+        "Selecione um ponto de coleta antes de registrar o descarte.",
+      );
+    }
+
+    if (selected.length === 0) {
+      return setError("Selecione ao menos um item para descartar.");
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await api.post(
+        "/disposals",
+        {
+          collectionPointId,
+          items: selected,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token.token}`,
+          },
+        },
+      );
+
+      navigate("/sucesso", { state: response?.data ?? {} });
+    } catch (submissionError) {
+      console.error(submissionError);
+
+      setError(
+        "Não foi possível registrar o descarte. Tente novamente mais tarde.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const backPath = collectionPointId
+    ? `/ponto/${collectionPointId}`
+    : "/pontos";
+
+  if (!collectionPointId || disposalItems.length === 0) {
+    return (
+      <AppShell activeTab="dispose">
+        <TopBar
+          showBack
+          backLabel="Pontos"
+          onBack={() => navigate(backPath)}
+          title="Confirmar Descarte"
+        />
+        <div className="px-5 py-8 text-muted-foreground">
+          Nenhum ponto de coleta válido selecionado. Volte para a lista de
+          pontos e escolha um ponto para descartar.
+        </div>
+      </AppShell>
+    );
+  }
 
   return (
     <AppShell activeTab="dispose">
       <TopBar
         showBack
-        backLabel="Detalhe"
-        onBack={() => navigate("/ponto/1")}
+        backLabel={pointName ? "Voltar para ponto" : "Pontos"}
+        onBack={() => navigate(backPath)}
         title="Confirmar Descarte"
       />
 
@@ -63,7 +138,7 @@ const ConfirmDisposal = () => {
             {disposalItems.map((item) => (
               <ItemToggle
                 key={item.id}
-                icon={item.icon}
+                icon={getItemIcon(item)}
                 label={item.label}
                 selected={selected.includes(item.id)}
                 onToggle={() => toggle(item.id)}
@@ -72,6 +147,11 @@ const ConfirmDisposal = () => {
           </div>
 
           {/* Items breakdown */}
+          {error && (
+            <div className="mb-4 rounded-sm border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {error}
+            </div>
+          )}
           <div className="flex flex-col gap-2.5 mb-6">
             {selectedItems.map((item) => (
               <div
@@ -81,7 +161,7 @@ const ConfirmDisposal = () => {
                 <div className="flex items-center gap-2.5">
                   <div className="w-8 h-8 rounded-[9px] bg-(--mint-glow) flex items-center justify-center">
                     <span className="text-primary [&_svg]:w-3.5 [&_svg]:h-3.5">
-                      {item.icon}
+                      {getItemIcon(item)}
                     </span>
                   </div>
                   <span className="text-[0.85rem] font-medium">
@@ -89,7 +169,7 @@ const ConfirmDisposal = () => {
                   </span>
                 </div>
                 <span className="text-[0.78rem] text-primary font-semibold">
-                  +{item.points} pts
+                  +{item.pointsPerDisposal} pts
                 </span>
               </div>
             ))}
@@ -115,11 +195,13 @@ const ConfirmDisposal = () => {
           </div>
 
           <button
-            onClick={() => navigate("/sucesso")}
-            className="w-full border-none rounded-sm px-4 py-4 font-display font-bold text-[0.9rem] cursor-pointer flex items-center justify-center gap-2 transition-all hover:opacity-90 hover:-translate-y-px text-foreground shadow-mint mb-4"
+            onClick={handleConfirmDisposal}
+            disabled={isSubmitting}
+            className="w-full rounded-sm px-4 py-4 font-display font-bold text-[0.9rem] cursor-pointer flex items-center justify-center gap-2 transition-all hover:opacity-90 hover:-translate-y-px text-foreground shadow-mint mb-4 disabled:cursor-not-allowed disabled:opacity-60"
             style={{ background: "var(--gradient-cta)" }}
           >
-            <Check size={18} /> Registrar meu descarte
+            <Check size={18} />{" "}
+            {isSubmitting ? "Registrando..." : "Registrar meu descarte"}
           </button>
         </div>
       </div>

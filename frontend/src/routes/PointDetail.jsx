@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import {
   MapPin,
@@ -8,40 +8,85 @@ import {
   Lightbulb,
   Smartphone,
   Cable,
+  Laptop,
+  Tablet,
+  Plug,
 } from "lucide-react";
 
 import AppShell from "../components/AppShell";
 import TopBar from "../components/TopBar";
+import { useEffect, useState } from "react";
+import api from "../utils/api";
 
-const acceptedItems = [
-  {
-    icon: <Battery size={18} className="text-amber" />,
-    label: "Pilhas",
-    pts: "+30 pts / descarte",
-    bg: "bg-amber/10",
-  },
-  {
-    icon: <Lightbulb size={18} className="text-[#A78BFA]" />,
-    label: "Lâmpadas",
-    pts: "+20 pts / descarte",
-    bg: "bg-[rgba(167,139,250,0.1)]",
-  },
-  {
-    icon: <Smartphone size={18} className="text-primary" />,
-    label: "Smartphones",
-    pts: "+80 pts / descarte",
-    bg: "bg-(--mint-glow)",
-  },
-  {
-    icon: <Cable size={18} className="text-eco-blue" />,
-    label: "Carregadores",
-    pts: "+15 pts / descarte",
-    bg: "bg-eco-blue/10",
-  },
-];
+const acceptedItemIcons = {
+  item_celular: <Smartphone size={18} className="text-primary" />,
+  item_notebook: <Laptop size={18} className="text-eco-blue" />,
+  item_tablet: <Tablet size={18} className="text-[#A78BFA]" />,
+  item_carregador: <Plug size={18} className="text-eco-blue" />,
+  item_pilhas: <Battery size={18} className="text-amber" />,
+  item_lampadas: <Lightbulb size={18} className="text-[#A78BFA]" />,
+  default: <Cable size={18} className="text-eco-blue" />,
+};
+
+const getAcceptedItemIcon = (item) =>
+  acceptedItemIcons[item.id] ?? acceptedItemIcons.default;
 
 const PointDetail = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const [point, setPoint] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPoint = async () => {
+      try {
+        const response = await api.get(`/collection-points/${id}`);
+        setPoint(response.data);
+      } catch (error) {
+        console.error(error);
+        setPoint(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchPoint();
+    }
+  }, [id]);
+
+  if (isLoading) {
+    return (
+      <AppShell activeTab="points">
+        <TopBar
+          showBack
+          backLabel="Pontos"
+          onBack={() => navigate("/pontos")}
+        />
+        <div className="px-5 py-8 text-muted-foreground">
+          Carregando ponto...
+        </div>
+      </AppShell>
+    );
+  }
+
+  if (!point) {
+    return (
+      <AppShell activeTab="points">
+        <TopBar
+          showBack
+          backLabel="Pontos"
+          onBack={() => navigate("/pontos")}
+        />
+        <div className="px-5 py-8 text-muted-foreground">
+          Ponto não encontrado.
+        </div>
+      </AppShell>
+    );
+  }
+
+  const isOpen = point.open ?? point.isOpen;
+  const acceptedItems = point.acceptedItems ?? [];
 
   return (
     <AppShell activeTab="points">
@@ -50,17 +95,27 @@ const PointDetail = () => {
       <div className="lg:grid lg:grid-cols-2 lg:gap-8 px-5 pb-5">
         <div>
           <h1 className="font-display font-extrabold text-2xl tracking-tight mb-1.5">
-            Claro Store
+            {point.name}
           </h1>
           <div className="text-[0.85rem] text-muted-foreground mb-3.5">
-            Av. Antônio Prado, 1204 · Shopping Indaiatuba, L42
+            {point.address}
           </div>
           <div className="flex gap-2.5 mb-5">
             <span className="flex items-center gap-1.5 bg-(--mint-glow) rounded-full px-3 py-1.5 text-xs text-primary [&_svg]:w-3.5 [&_svg]:h-3.5">
-              <MapPin size={14} /> 280m de você
+              <MapPin size={14} />{" "}
+              {point.distance
+                ? `${point.distance} de você`
+                : "Distância não disponível"}
             </span>
-            <span className="flex items-center gap-1.5 bg-[rgba(74,222,128,0.08)] text-[#4ADE80] rounded-full px-3 py-1.5 text-xs [&_svg]:w-3.5 [&_svg]:h-3.5">
-              <Clock size={14} /> Aberto · até 22h
+            <span
+              className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs [&_svg]:w-3.5 [&_svg]:h-3.5 ${
+                isOpen
+                  ? "bg-[rgba(74,222,128,0.08)] text-[#4ADE80]"
+                  : "bg-[rgba(248,113,113,0.1)] text-[#F43F5E]"
+              }`}
+            >
+              <Clock size={14} />{" "}
+              {point.openStatus ?? (isOpen ? "Aberto agora" : "Fechado")}
             </span>
           </div>
 
@@ -91,35 +146,46 @@ const PointDetail = () => {
             <div className="grid grid-cols-2 gap-2.5">
               {acceptedItems.map((item) => (
                 <div
-                  key={item.label}
+                  key={item.id}
                   className="bg-card border-[1.5px] border-border rounded-sm p-3.5 flex items-center gap-2.5"
                 >
-                  <div
-                    className={`w-8.5 h-8.5 rounded-[10px] flex items-center justify-center shrink-0 ${item.bg}`}
-                  >
-                    {item.icon}
+                  <div className="w-8.5 h-8.5 rounded-[10px] flex items-center justify-center shrink-0 bg-card">
+                    {getAcceptedItemIcon(item)}
                   </div>
                   <div>
                     <div className="text-[0.8rem] font-medium">
                       {item.label}
                     </div>
                     <div className="text-[0.65rem] text-primary mt-0.5">
-                      {item.pts}
+                      +{item.pointsPerDisposal} pts / descarte
                     </div>
                   </div>
                 </div>
               ))}
+              {acceptedItems.length === 0 && (
+                <div className="col-span-full text-muted-foreground">
+                  Nenhum item aceito cadastrado para este ponto.
+                </div>
+              )}
             </div>
           </div>
 
           {/* CTAs */}
           <div className="flex gap-2.5">
             <button
-              onClick={() => navigate("/confirmar")}
+              onClick={() =>
+                navigate("/confirmar", {
+                  state: {
+                    collectionPointId: point.id,
+                    pointName: point.name,
+                    acceptedItems,
+                  },
+                })
+              }
               className="flex-1 border-none rounded-sm px-4 py-4 font-display font-bold text-[0.9rem] cursor-pointer flex items-center justify-center gap-2 transition-all hover:opacity-90 hover:-translate-y-px text-foreground shadow-mint"
               style={{ background: "var(--gradient-cta)" }}
             >
-              <Check size={18} /> Confirmar descarte aqui
+              <Check size={18} /> Confirmar descarte
             </button>
             <button className="bg-card text-eco-secondary border-[1.5px] border-border rounded-sm px-4.5 py-4 font-display font-semibold text-[0.85rem] cursor-pointer flex items-center justify-center gap-2 transition-colors hover:border-primary hover:text-primary">
               <MapPin size={18} />

@@ -36,7 +36,7 @@ const DesktopSidebar = ({ activeTab }) => {
     {
       id: "points",
       icon: <MapPin size={20} />,
-      label: "Pontos",
+      label: "Locais",
       path: "/pontos",
     },
     {
