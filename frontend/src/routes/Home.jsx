@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
 
-import { Bell, AlertTriangle, Smartphone } from "lucide-react";
+import { Bell, AlertTriangle, Smartphone, Shield } from "lucide-react";
 
 import AppShell from "../components/AppShell";
 import TopBar from "../components/TopBar";
@@ -76,10 +76,10 @@ const Home = () => {
 
       <div className="px-5 pt-0.5 pb-5 flex items-center justify-between">
         <div>
-          <div className="text-[0.72rem] text-muted-foreground uppercase tracking-[1px] font-medium">
+          <div className="text-[0.85rem] text-muted-foreground uppercase tracking-[1.5px] font-bold">
             {dataFormatada}
           </div>
-          <div className="font-display text-2xl font-bold mt-0.5">
+          <div className="font-display text-2xl font-bold mt-1">
             Olá,{" "}
             <span className="text-primary">
               {user ? user?.name : "usuário"}
@@ -139,7 +139,7 @@ const Home = () => {
           description="Risco real de incêndio. Como remover e descartar com segurança."
         />
         <GuideCard
-          icon={<Smartphone size={22} className="text-primary" />}
+          icon={<Shield size={22} shield="text-primary" />}
           iconColor="mint"
           title="Apague seus dados antes de reciclar"
           description="Passo a passo para iPhone e Android antes do descarte."

@@ -37,26 +37,26 @@ const PointsBar = () => {
 
       <div className="flex justify-between items-start">
         <div>
-          <div className="text-[0.68rem] text-primary uppercase tracking-[1.4px] opacity-80">
+          <div className="text-[0.75rem] text-primary uppercase tracking-[1px] font-bold">
             EcoSaldo
           </div>
-          <div className="font-display text-[2.4rem] font-extrabold tracking-[-2px] leading-none mt-1 mb-0.5">
+          <div className="font-display text-[2.6rem] font-extrabold tracking-tight leading-none mt-1 mb-1">
             1.240{" "}
-            <span className="text-base font-normal text-primary tracking-normal ml-0.5">
+            <span className="text-[1rem] font-bold text-primary tracking-normal ml-0.5">
               pts
             </span>
           </div>
-          <div className="text-xs text-foreground/45">
+          <div className="text-[0.8rem] text-foreground/60 font-medium">
             ≈ R$ 12,40 em parceiros
           </div>
         </div>
-        <div className="bg-(--mint-glow2) border border-primary/30 rounded-full px-3 py-1.5 text-[0.7rem] text-primary font-medium whitespace-nowrap">
+        <div className="bg-(--mint-glow2) border border-primary/40 rounded-full px-3 py-1.5 text-[0.8rem] text-(--active-text) font-bold whitespace-nowrap">
           🔥 3 semanas
         </div>
       </div>
 
       <div className="mt-4">
-        <div className="flex justify-between text-[0.68rem] text-muted-foreground mb-1.5">
+        <div className="flex justify-between text-[0.75rem] text-muted-foreground font-medium mb-1.5">
           <span>Eco-Herói · Nível 4</span>
           <span className="text-primary">65% → Guardião</span>
         </div>

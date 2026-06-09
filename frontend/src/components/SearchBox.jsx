@@ -9,7 +9,7 @@ const SearchBox = ({
   return (
     <div className="px-5 pb-6">
       {title && (
-        <div className="font-display font-bold text-base text-eco-secondary mb-3">
+        <div className="font-display font-bold text-[1.05rem] text-muted-foreground mb-3">
           {title}
         </div>
       )}

@@ -23,7 +23,7 @@ const BottomNav = ({ activeTab }) => {
   ];
 
   return (
-    <div className="lg:hidden fixed bottom-0 left-1/2 -translate-x-1/2 max-w-105 w-full bg-[rgba(20,23,30,0.96)] backdrop-blur-[20px] border-t border-border flex items-center justify-around pt-2.5 pb-4.5 z-200">
+    <div className="lg:hidden fixed bottom-0 left-1/2 -translate-x-1/2 max-w-105 w-full bg-card/90 backdrop-blur-[20px] border-t border-border flex items-center justify-around pt-2.5 pb-4.5 z-200 transition-colors duration-300">
       {tabs.map((tab) =>
         tab.id === "dispose" ? (
           <button
@@ -40,12 +40,12 @@ const BottomNav = ({ activeTab }) => {
             onClick={() => navigate(tab.path)}
             className={`flex flex-col items-center gap-1 cursor-pointer px-4 py-1 rounded-xl transition-colors hover:bg-foreground/5 ${
               activeTab === tab.id
-                ? "[&_svg]:text-primary [&_svg]:drop-shadow-[0_0_4px_hsl(var(--mint))] [&_span]:text-primary"
-                : ""
+                ? "text-primary [&_svg]:text-primary [&_span]:text-primary font-bold"
+                : "text-muted-foreground [&_svg]:text-muted-foreground"
             }`}
           >
             {tab.icon}
-            <span className="text-[0.58rem] text-muted-foreground font-medium">
+            <span className="text-[0.62rem] font-medium transition-colors">
               {tab.label}
             </span>
           </div>

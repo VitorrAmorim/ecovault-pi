@@ -56,7 +56,7 @@ const CategoryPills = ({ onSelect, variant = "home" }) => {
           onClick={() => handleClick(cat.id)}
           className={`shrink-0 flex items-center gap-2 border-[1.5px] rounded-full px-4 py-2.5 cursor-pointer transition-all whitespace-nowrap hover:-translate-y-px ${
             activeId === cat.id
-              ? "bg-(--mint-glow) border-primary [&_svg]:text-primary"
+              ? "active-tab border-primary"
               : "bg-card border-border hover:border-primary"
           }`}
         >
@@ -66,7 +66,7 @@ const CategoryPills = ({ onSelect, variant = "home" }) => {
             </span>
           )}
           <span
-            className={`text-[0.8rem] font-medium ${activeId === cat.id ? "text-primary" : "text-eco-secondary"}`}
+            className={`text-[0.85rem] font-medium ${activeId === cat.id ? "text-(--active-text)" : "text-muted-foreground"}`}
           >
             {cat.label}
           </span>

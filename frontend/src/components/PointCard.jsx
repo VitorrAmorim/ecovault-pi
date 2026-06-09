@@ -27,17 +27,17 @@ const PointCard = ({
         className={`w-2.5 h-2.5 rounded-full mt-1.5 shrink-0 ${dotColors[status]}`}
       />
       <div className="flex-1">
-        <div className="font-display font-bold text-[0.92rem] mb-0.5">
+        <div className="font-display font-bold text-[1rem] mb-1">
           {name}
         </div>
-        <div className="text-xs text-muted-foreground mb-2.5 leading-relaxed">
+        <div className="text-[0.85rem] text-muted-foreground mb-3 leading-relaxed">
           {address}
         </div>
-        <div className="flex gap-1.5 flex-wrap mb-2.5">
+        <div className="flex gap-2 flex-wrap mb-3">
           {tags.map((tag, i) => (
             <span
               key={i}
-              className="flex items-center gap-1.5 bg-foreground/5 rounded-full px-2.5 py-1 text-[0.68rem] text-eco-secondary [&_svg]:w-3 [&_svg]:h-3 [&_svg]:shrink-0"
+              className="flex items-center gap-1.5 bg-foreground/5 rounded-full px-2.5 py-1 text-[0.75rem] font-medium text-foreground/80 [&_svg]:w-3.5 [&_svg]:h-3.5 [&_svg]:shrink-0"
             >
               {tag.icon}
               {tag.label}
@@ -45,11 +45,11 @@ const PointCard = ({
           ))}
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-[0.72rem] bg-(--mint-glow) text-primary px-2.5 py-1 rounded-full font-medium">
+          <span className="text-[0.75rem] status-info px-2.5 py-1 rounded-full font-medium">
             📍 {distance}
           </span>
           <span
-            className={`text-[0.72rem] ${isOpen ? "text-[#4ADE80]" : "text-destructive"}`}
+            className={`text-[0.75rem] font-bold ${isOpen ? "text-emerald-500" : "text-destructive"}`}
           >
             ● {openStatus}
           </span>

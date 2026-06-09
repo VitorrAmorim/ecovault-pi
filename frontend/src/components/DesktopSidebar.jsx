@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Home, MapPin, BookOpen, User, Package } from "lucide-react";
+import ThemeToggle from "./ThemeToggle";
 
 const DesktopSidebar = ({ activeTab }) => {
   const navigate = useNavigate();
@@ -55,7 +56,7 @@ const DesktopSidebar = ({ activeTab }) => {
   ];
 
   return (
-    <aside className="hidden lg:flex flex-col fixed w-55 shrink-0 bg-card border-r border-border min-h-screen top-0 z-100">
+    <aside className="hidden lg:flex flex-col fixed w-55 shrink-0 bg-card border-r border-border min-h-screen top-0 z-100 transition-colors duration-300">
       {/* Logo */}
       <div className="px-6 pt-7 pb-8">
         <div className="font-display font-extrabold text-4xl tracking-tight">
@@ -70,11 +71,10 @@ const DesktopSidebar = ({ activeTab }) => {
             <button
               key={tab.id}
               onClick={() => navigate(tab.path)}
-              className={`flex items-center gap-3 px-4 py-3 rounded-sm text-[0.85rem] font-medium cursor-pointer border-none transition-colors text-left ${
-                activeTab === tab.id
-                  ? "bg-(--mint-glow) text-primary [&_svg]:text-primary"
+              className={`flex items-center gap-3 px-4 py-3 rounded-sm text-[0.95rem] font-medium cursor-pointer border-none transition-colors text-left ${activeTab === tab.id
+                  ? "active-tab font-bold"
                   : "bg-transparent text-muted-foreground hover:bg-foreground/5 hover:text-foreground"
-              }`}
+                }`}
             >
               {tab.icon}
               {tab.label}
@@ -82,6 +82,11 @@ const DesktopSidebar = ({ activeTab }) => {
           ),
         )}
       </nav>
+
+      <div className="px-4 py-3 flex items-center justify-between border-t border-border">
+        <span className="text-[0.85rem] font-medium text-muted-foreground">Alternar Tema</span>
+        <ThemeToggle />
+      </div>
 
       {user && (
         <div className="px-4 py-5 border-t border-border flex items-center gap-3">

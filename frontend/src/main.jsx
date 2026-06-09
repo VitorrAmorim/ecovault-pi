@@ -2,6 +2,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { ThemeProvider } from "./context/ThemeContext.jsx";
 
 import Home from "./routes/Home.jsx";
 import CollectionPoints from "./routes/CollectionPoints.jsx";
@@ -58,5 +59,7 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <RouterProvider router={router} />,
+  <ThemeProvider>
+    <RouterProvider router={router} />
+  </ThemeProvider>
 );

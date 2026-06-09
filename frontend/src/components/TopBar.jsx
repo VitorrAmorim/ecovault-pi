@@ -1,12 +1,13 @@
 import { ChevronLeft } from "lucide-react";
+import ThemeToggle from "./ThemeToggle";
 
 const TopBar = ({ showBack, backLabel, onBack, title, rightContent }) => {
   return (
     <div
-      className="items-center justify-between px-5 pt-5 pb-1"
+      className="flex items-center justify-between px-5 pt-5 pb-1 lg:hidden transition-colors duration-300"
       style={{ background: "var(--gradient-topbar)" }}
     >
-      <div className="hidden">
+      <div className="flex items-center gap-2 flex-1">
         {showBack ? (
           <button
             onClick={onBack}
@@ -20,15 +21,15 @@ const TopBar = ({ showBack, backLabel, onBack, title, rightContent }) => {
             Eco<span className="text-primary">Vault</span>
           </div>
         )}
+      </div>
 
-        {title && (
-          <div className="font-display font-bold text-base">{title}</div>
-        )}
+      {title && (
+        <div className="font-display font-bold text-base flex-1 text-center">{title}</div>
+      )}
 
-        {rightContent ||
-          (showBack && !title ? null : !showBack ? null : (
-            <div className="w-17.5" />
-          ))}
+      <div className="flex items-center gap-2 justify-end flex-1">
+        <ThemeToggle />
+        {rightContent}
       </div>
     </div>
   );

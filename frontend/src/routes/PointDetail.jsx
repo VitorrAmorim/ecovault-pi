@@ -101,20 +101,20 @@ const PointDetail = () => {
             {point.address}
           </div>
           <div className="flex gap-2.5 mb-5">
-            <span className="flex items-center gap-1.5 bg-(--mint-glow) rounded-full px-3 py-1.5 text-xs text-primary [&_svg]:w-3.5 [&_svg]:h-3.5">
-              <MapPin size={14} />{" "}
+            <span className="flex items-center gap-1.5 status-info rounded-full px-3 py-1.5 text-[0.8rem] font-medium [&_svg]:w-4 [&_svg]:h-4">
+              <MapPin size={16} />{" "}
               {point.distance
                 ? `${point.distance} de você`
                 : "Distância não disponível"}
             </span>
             <span
-              className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs [&_svg]:w-3.5 [&_svg]:h-3.5 ${
+              className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[0.8rem] font-medium [&_svg]:w-4 [&_svg]:h-4 ${
                 isOpen
-                  ? "bg-[rgba(74,222,128,0.08)] text-[#4ADE80]"
-                  : "bg-[rgba(248,113,113,0.1)] text-[#F43F5E]"
+                  ? "status-success"
+                  : "status-danger"
               }`}
             >
-              <Clock size={14} />{" "}
+              <Clock size={16} />{" "}
               {point.openStatus ?? (isOpen ? "Aberto agora" : "Fechado")}
             </span>
           </div>

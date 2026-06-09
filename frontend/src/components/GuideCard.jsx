@@ -16,10 +16,10 @@ const GuideCard = ({ icon, iconColor, title, description }) => {
         {icon}
       </div>
       <div className="flex-1">
-        <div className="font-display text-[0.85rem] font-bold mb-0.5">
+        <div className="font-display text-[1rem] font-bold mb-1">
           {title}
         </div>
-        <div className="text-[0.73rem] text-muted-foreground leading-relaxed">
+        <div className="text-[0.85rem] text-muted-foreground leading-relaxed">
           {description}
         </div>
       </div>

@@ -33,8 +33,84 @@
   --color-ring: hsl(var(--ring));
 }
 
-/* TOKENS */
 :root {
+  --mint: 168 85% 20%;
+  --mint-deep: 170 85% 15%;
+  --emerald: 160 95% 18%;
+  --anth: 0 0% 100%;
+  --anth-2: 0 0% 100%;
+  --anth-3: 0 0% 96%;
+  --anth-4: 215 14% 88%;
+  --white: 0 0% 10%;
+  --white-2: 0 0% 20%;
+  --amber: 30 100% 35%;
+  --red: 0 85% 40%;
+  --blue: 215 100% 40%;
+  --muted-color: 0 0% 32%;
+  --secondary-color: 0 0% 20%;
+
+  --mint-glow: hsl(168 85% 20%);
+  --mint-glow2: hsla(168, 85%, 20%, 0.2);
+  --active-text: hsl(0, 0%, 100%);
+
+  --background: var(--anth);
+  --foreground: var(--white);
+  --card: var(--anth-2);
+  --card-foreground: var(--white);
+  --popover: var(--anth-2);
+  --popover-foreground: var(--white);
+  --primary: var(--mint);
+  --primary-foreground: 0 0% 100%;
+  --secondary: var(--anth-3);
+  --secondary-foreground: var(--white);
+  --muted: var(--anth-3);
+  --muted-foreground: var(--muted-color);
+  --accent: var(--mint);
+  --accent-foreground: var(--white);
+  --destructive: var(--red);
+  --destructive-foreground: 0 0% 100%;
+  --border: var(--anth-4);
+  --input: var(--anth-4);
+  --ring: var(--mint);
+
+  --radius: 18px;
+  --radius-sm: 12px;
+
+  --status-success-bg: hsla(160, 100%, 20%, 0.1);
+  --status-success-text: hsl(160, 100%, 20%);
+  --status-danger-bg: hsla(0, 84%, 35%, 0.1);
+  --status-danger-text: hsl(0, 84%, 35%);
+  --status-info-bg: hsla(215, 100%, 40%, 0.1);
+  --status-info-text: hsl(215, 100%, 40%);
+
+  --gradient-hero: linear-gradient(135deg,
+      hsl(168 80% 92%) 0%,
+      hsl(168 40% 97%) 100%);
+  --gradient-cta: linear-gradient(135deg,
+      hsl(var(--mint-deep)),
+      hsl(var(--emerald)));
+  --gradient-fab: linear-gradient(135deg,
+      hsl(var(--mint)),
+      hsl(var(--emerald)));
+  --gradient-topbar: linear-gradient(to bottom,
+      hsl(var(--anth)) 85%,
+      transparent);
+
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.06);
+  --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.03);
+
+  --gradient-coleta: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+
+  --coleta-border: rgba(59, 130, 246, 0.25);
+
+  --coleta-icon-bg: rgba(59, 130, 246, 0.12);
+
+  --coleta-badge-bg: rgba(59, 130, 246, 0.15);
+
+  --coleta-badge-text: #1d4ed8;
+}
+
+.dark {
   --mint: 168 76% 50%;
   --mint-deep: 170 79% 40%;
   --emerald: 160 95% 30%;
@@ -49,6 +125,10 @@
   --blue: 217 92% 68%;
   --muted-color: 216 12% 53%;
   --secondary-color: 204 18% 70%;
+
+  --mint-glow: hsla(168, 76%, 50%, 0.1);
+  --mint-glow2: hsla(168, 76%, 50%, 0.2);
+  --active-text: var(--mint);
 
   --background: var(--anth);
   --foreground: var(--white);
@@ -70,31 +150,32 @@
   --input: var(--anth-4);
   --ring: var(--mint);
 
-  --radius: 18px;
-  --radius-sm: 12px;
+  --coleta-border: rgba(96, 165, 250, 0.22);
+  --coleta-icon-bg: rgba(96, 165, 250, 0.12);
+  --coleta-badge-bg: rgba(96, 165, 250, 0.15);
+  --coleta-badge-text: #93C5FD;
+
+  --status-success-bg: hsla(160, 100%, 75%, 0.1);
+  --status-success-text: hsl(160, 100%, 75%);
+  --status-danger-bg: hsla(0, 84%, 75%, 0.1);
+  --status-danger-text: hsl(0, 84%, 75%);
+  --status-info-bg: hsla(217, 92%, 75%, 0.1);
+  --status-info-text: hsl(217, 92%, 75%);
 
   /* Gradients */
-  --gradient-hero: linear-gradient(
-    135deg,
-    hsl(158 78% 12%) 0%,
-    hsl(160 55% 8%) 100%
-  );
-  --gradient-cta: linear-gradient(
-    135deg,
-    hsl(var(--mint-deep)),
-    hsl(var(--emerald))
-  );
-  --gradient-fab: linear-gradient(
-    135deg,
-    hsl(var(--mint)),
-    hsl(var(--emerald))
-  );
+  --gradient-hero: linear-gradient(135deg,
+      hsl(158 78% 12%) 0%,
+      hsl(160 55% 8%) 100%);
+  --gradient-cta: linear-gradient(135deg,
+      hsl(var(--mint-deep)),
+      hsl(var(--emerald)));
+  --gradient-fab: linear-gradient(135deg,
+      hsl(var(--mint)),
+      hsl(var(--emerald)));
   --gradient-coleta: linear-gradient(135deg, #1a2540 0%, #111829 100%);
-  --gradient-topbar: linear-gradient(
-    to bottom,
-    hsl(var(--anth)) 75%,
-    transparent
-  );
+  --gradient-topbar: linear-gradient(to bottom,
+      hsl(var(--anth)) 75%,
+      transparent);
 
   /* Shadows */
   --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.45);
@@ -111,6 +192,7 @@ body {
   color: hsl(var(--foreground));
   font-family: "DM Sans", sans-serif;
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* UTILITIES */
@@ -128,6 +210,7 @@ body {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -139,6 +222,7 @@ body {
     opacity: 0;
     transform: translateY(12px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -150,6 +234,7 @@ body {
     transform: scale(0.5);
     opacity: 0;
   }
+
   to {
     transform: scale(1);
     opacity: 1;
@@ -166,4 +251,28 @@ body {
 
 .animate-pop-in {
   animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.active-tab {
+  background-color: var(--mint-glow);
+  color: var(--active-text);
+}
+
+.active-tab svg {
+  color: var(--active-text);
+}
+
+.status-success {
+  background-color: var(--status-success-bg);
+  color: var(--status-success-text);
+}
+
+.status-danger {
+  background-color: var(--status-danger-bg);
+  color: var(--status-danger-text);
+}
+
+.status-info {
+  background-color: var(--status-info-bg);
+  color: var(--status-info-text);
 }
