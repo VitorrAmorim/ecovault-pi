@@ -21,6 +21,7 @@ import AppShell from "../components/AppShell";
 import TopBar from "../components/TopBar";
 import SectionHeader from "../components/SectionHeader";
 import GuideCard from "../components/GuideCard";
+import { useTheme } from "../context/ThemeContext";
 
 const GuideCategory = ({ icon, title, description, items, color, bgColor }) => (
   <div className="bg-card border-[1.5px] border-border rounded-lg p-5 transition-colors hover:border-(--mint-glow2)">
@@ -84,7 +85,7 @@ const guideCategories = [
     bgColor: "bg-[rgba(167,139,250,0.1)]",
   },
   {
-    icon: <Smartphone size={24} className="text-primary" />,
+    icon: <Smartphone size={24} className="text-white" />,
     title: "Smartphones e Tablets",
     description:
       "Possuem baterias de lítio, metais raros e componentes que podem ser reaproveitados. Apague seus dados antes de entregar para reciclagem.",
@@ -108,7 +109,7 @@ const guideCategories = [
     bgColor: "bg-eco-blue/10",
   },
   {
-    icon: <Cpu size={24} className="text-primary" />,
+    icon: <Cpu size={24} className="text-white" />,
     title: "Computadores e Periféricos",
     description:
       "Placas-mãe, processadores e memórias contêm ouro, prata e paládio. Discos rígidos guardam dados pessoais — destrua antes de descartar.",
@@ -150,7 +151,7 @@ const safetyTips = [
       "Risco real de incêndio e explosão. Não perfure nem tente remover sozinho. Leve a uma assistência técnica ou ponto especializado.",
   },
   {
-    icon: <Shield size={22} className="text-primary" />,
+    icon: <Shield size={22} className="text-white" />,
     iconColor: "mint",
     title: "Apague seus dados antes de reciclar",
     description:
@@ -171,7 +172,7 @@ const safetyTips = [
       "Cabos possuem cobre e PVC. Podem ser reciclados separadamente. Acumule em uma sacola e leve ao ponto de coleta.",
   },
   {
-    icon: <Leaf size={22} className="text-primary" />,
+    icon: <Leaf size={22} className="text-white" />,
     iconColor: "mint",
     title: "Prolongue a vida útil do eletrônico",
     description:
@@ -181,6 +182,8 @@ const safetyTips = [
 
 const Guide = () => {
   const navigate = useNavigate();
+
+  const { theme } = useTheme();
 
   return (
     <AppShell activeTab="guide">
@@ -215,10 +218,19 @@ const Guide = () => {
       {/* Info banner */}
       <div className="px-5 pb-6">
         <div className="bg-(--mint-glow) border border-primary/20 rounded-sm p-4 flex gap-3 items-start">
-          <Info size={18} className="text-primary shrink-0 mt-0.5" />
-          <div className="text-[0.78rem] text-muted-foreground leading-relaxed">
-            <span className="text-primary font-semibold">Sabia que?</span> O
-            Brasil descarta mais de 2 milhões de toneladas de lixo eletrônico
+          <Info
+            size={18}
+            className={`text-primary shrink-0 mt-0.5 ${theme === "light" ? "text-white" : ""}`}
+          />
+          <div
+            className={`text-[0.78rem] text-muted-foreground leading-relaxed ${theme === "light" ? "text-white" : ""}`}
+          >
+            <span
+              className={`text-primary font-semibold ${theme === "light" ? "text-white" : ""}`}
+            >
+              Sabia que?
+            </span>{" "}
+            O Brasil descarta mais de 2 milhões de toneladas de lixo eletrônico
             por ano, mas apenas 3% é reciclado corretamente. Faça parte da
             mudança!
           </div>
@@ -285,7 +297,7 @@ const Guide = () => {
       <div className="px-5 pb-8">
         <button
           onClick={() => navigate("/pontos")}
-          className="w-full border-none rounded-sm px-4 py-4 font-display font-bold text-[0.9rem] cursor-pointer flex items-center justify-center gap-2 transition-all hover:opacity-90 hover:-translate-y-px text-foreground shadow-mint"
+          className="w-full text-white border-none rounded-sm px-4 py-4 font-display font-bold text-[0.9rem] cursor-pointer flex items-center justify-center gap-2 transition-all hover:opacity-90 hover:-translate-y-px text-foreground shadow-mint"
           style={{ background: "var(--gradient-cta)" }}
         >
           <MapPin size={18} /> Encontrar pontos de coleta

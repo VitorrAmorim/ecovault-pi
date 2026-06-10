@@ -17,6 +17,7 @@ import AppShell from "../components/AppShell";
 import TopBar from "../components/TopBar";
 import ItemToggle from "../components/ItemToggle";
 import api from "../utils/api";
+import { useTheme } from "../context/ThemeContext";
 
 const acceptedItemIcons = {
   item_celular: <Smartphone size={18} />,
@@ -36,11 +37,11 @@ const ConfirmDisposal = () => {
   const location = useLocation();
   const { collectionPointId, pointName, acceptedItems } = location.state ?? {};
   const disposalItems = acceptedItems ?? [];
-  const [selected, setSelected] = useState(() =>
-    disposalItems.map((item) => item.id),
-  );
+  const [selected, setSelected] = useState([]);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { theme } = useTheme();
 
   const toggle = (id) => {
     setSelected((prev) =>
@@ -160,7 +161,9 @@ const ConfirmDisposal = () => {
               >
                 <div className="flex items-center gap-2.5">
                   <div className="w-8 h-8 rounded-[9px] bg-(--mint-glow) flex items-center justify-center">
-                    <span className="text-primary [&_svg]:w-3.5 [&_svg]:h-3.5">
+                    <span
+                      className={`[&_svg]:w-3.5 [&_svg]:h-3.5 ${theme === "light" ? "text-white" : "text-primary "}`}
+                    >
                       {getItemIcon(item)}
                     </span>
                   </div>
@@ -197,7 +200,7 @@ const ConfirmDisposal = () => {
           <button
             onClick={handleConfirmDisposal}
             disabled={isSubmitting}
-            className="w-full rounded-sm px-4 py-4 font-display font-bold text-[0.9rem] cursor-pointer flex items-center justify-center gap-2 transition-all hover:opacity-90 hover:-translate-y-px text-foreground shadow-mint mb-4 disabled:cursor-not-allowed disabled:opacity-60"
+            className="w-full rounded-sm px-4 py-4 font-display font-bold text-[0.9rem] cursor-pointer flex items-center justify-center gap-2 transition-all hover:opacity-90 hover:-translate-y-px text-white shadow-mint mb-4 disabled:cursor-not-allowed disabled:opacity-60"
             style={{ background: "var(--gradient-cta)" }}
           >
             <Check size={18} />{" "}

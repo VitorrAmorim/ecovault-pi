@@ -54,7 +54,7 @@ const Profile = () => {
           {/* Top */}
           <div className="flex items-center gap-3 mb-5">
             <div
-              className="w-12 h-12 rounded-full flex items-center justify-center font-display font-bold text-sm"
+              className="w-12 h-12 text-white rounded-full flex items-center justify-center font-display font-bold text-sm"
               style={{ background: "var(--gradient-fab)" }}
             >
               {user?.name
@@ -70,7 +70,7 @@ const Profile = () => {
                 Eco-Herói · Nível 4
               </div>
             </div>
-            <div className="bg-(--mint-glow) text-primary text-xs font-semibold px-3 py-1 rounded-full">
+            <div className="bg-(--mint-glow) text-white text-xs font-semibold px-3 py-1 rounded-full">
               Top 12%
             </div>
           </div>

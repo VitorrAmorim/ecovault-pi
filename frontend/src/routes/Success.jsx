@@ -20,7 +20,7 @@ const Success = () => {
     <div className="flex min-h-screen justify-center bg-background">
       <div className="w-full max-w-105 lg:max-w-150 flex flex-col items-center justify-center px-5 pt-16 pb-5 text-center min-h-[70vh]">
         <div className="w-25 h-25 rounded-full bg-(--mint-glow) border-2 border-primary/35 flex items-center justify-center mb-6 animate-pop-in">
-          <Check size={48} className="text-primary" strokeWidth={2.5} />
+          <Check size={48} className="text-white" strokeWidth={2.5} />
         </div>
         <h1 className="font-display font-extrabold text-3xl tracking-tight mb-2">
           Descarte registrado!
@@ -62,7 +62,7 @@ const Success = () => {
 
         <button
           onClick={() => navigate("/")}
-          className="w-full border-none rounded-sm px-4 py-4 font-display font-bold text-[0.9rem] cursor-pointer flex items-center justify-center gap-2 transition-all hover:opacity-90 hover:-translate-y-px text-foreground shadow-mint"
+          className="w-full border-none rounded-sm px-4 py-4 font-display font-bold text-[0.9rem] cursor-pointer flex items-center justify-center gap-2 transition-all hover:opacity-90 hover:-translate-y-px text-white shadow-mint"
           style={{ background: "var(--gradient-cta)" }}
         >
           Voltar para o início

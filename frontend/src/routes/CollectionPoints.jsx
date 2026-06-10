@@ -95,7 +95,15 @@ const CollectionPoints = () => {
               isOpen={point.open ?? point.isOpen}
               status={point.status ?? "green"}
               delay={i * 50}
-              onClick={() => navigate(`/ponto/${point.id}`)}
+              onClick={() =>
+                navigate("/confirmar", {
+                  state: {
+                    collectionPointId: point.id,
+                    pointName: point.name,
+                    acceptedItems: point.acceptedItems ?? [],
+                  },
+                })
+              }
             />
           ))
         )}

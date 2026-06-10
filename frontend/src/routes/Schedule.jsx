@@ -132,12 +132,12 @@ const Schedule = () => {
 
           {/* Bonus */}
           <div className="bg-(--mint-glow) border border-primary/20 rounded-sm p-3.5 mb-5 flex gap-3 items-center">
-            <Star size={20} className="text-primary shrink-0" />
+            <Star size={20} className="text-white shrink-0" />
             <div>
-              <div className="text-[0.78rem] font-semibold text-primary">
+              <div className="text-[0.78rem] font-semibold text-white">
                 +240 pontos dobrados
               </div>
-              <div className="text-[0.7rem] text-muted-foreground">
+              <div className="text-[0.7rem] text-white">
                 TV = 120pts × 2 por ser coleta em casa
               </div>
             </div>
@@ -145,7 +145,7 @@ const Schedule = () => {
 
           <button
             onClick={() => navigate("/sucesso")}
-            className="w-full border-none rounded-sm px-4 py-4 font-display font-bold text-[0.9rem] cursor-pointer flex items-center justify-center gap-2 transition-all hover:opacity-90 hover:-translate-y-px text-foreground shadow-mint mb-4"
+            className="w-full text-white border-none rounded-sm px-4 py-4 font-display font-bold text-[0.9rem] cursor-pointer flex items-center justify-center gap-2 transition-all hover:opacity-90 hover:-translate-y-px shadow-mint mb-4"
             style={{ background: "var(--gradient-cta)" }}
           >
             <Home size={18} /> Confirmar agendamento
