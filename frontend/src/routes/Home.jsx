@@ -91,6 +91,7 @@ const Home = () => {
           <div
             className="w-9 h-9 rounded-full flex items-center justify-center font-display font-bold text-[0.65rem]"
             style={{ background: "var(--gradient-fab)" }}
+            onClick={() => localStorage.removeItem("token") || setUser(null)}
           >
             {user?.name
               ?.split(" ")
